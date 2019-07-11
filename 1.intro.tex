@@ -1,0 +1,41 @@
+The probability of detecting a true association between genetic and phenotype variations, known as statistical power, is influenced by a number of factors such as sample sizes, the statistical test used, the frequency of the risk variant, and magnitude of the effect on the trait. 
+Power analysis, which determines the suitable factor combinations in order to achieve sufficient statistical power, plays an important role in determining study designs \citep{Skol06, Goodwin16}, and in interpreting published findings \citep{Ioannidis05}.
+
+There has been a number of widely used calculators for genome-wide association studies (GWAS). 
+\cite{Sham98} studied power analysis of likelihood ratio tests for associations between marker SNPs and quantitative or qualitative traits; the results were implemented in GPC \citep{Purcell03}.
+\cite{Skol06} studied the performance of two-sample t-tests, and extended the analysis to two-stage designs; the results were implemented in the CaTS caclulator, and later, in the GAS calculator for one-stage designs \citep{Johnson17}.
+Independently, \citet{Menashe08} implemented the calculations for one-stage designs in the PGA calculator.
+Recent works have also studied power of a number of SNP-set based tests targeting rare variants \citep{Wang14, Derkach17}.
+See \citet{Sham14} for a review.
+
+Despite these efforts, some difficulties remain in practice:
+
+%\vspace{-5pt}
+% \begin{enumerate}
+    %\noindent
+    {\it 1. Lack of universality.} 
+    Existing power analyses are tied to the underlying models and the statistical procedures used; power calculations for a certain model-method combination may not be valid if either the model or the method changes.
+    % In principle, power calculations based on likelihood ratio tests or t-tests cease to hold for studies running logistic regressions or chi-squared tests.
+    Users are burdened with matching the appropriate tool to the specific type of analysis they wish to perform.
+    This is complicated by the fact that the precise test and model assumptions are rarely made explicit in the existing calculators.
+    %Users have to match their tests used with that assumed by the power calculators, although these assumptions are rarely made explicit. 
+    
+    %\noindent
+    {\it 2. Mismatching definitions of key quantities.}
+    %A typical example is risk allele frequency (RAF), for which we identify at least three operational definitions (see Sec 2). 
+    While GWAS catalogs, e.g., NHGRI-EBI \citep{MacArthur16}, require studies to report risk allele frequency (RAF) \emph{in the control group}, all of the aforementioned power calculators assume the RAF input to be the frequency \emph{in the general population}. 
+    These quantities are not necessarily equal, and using one in place of the other may grossly distort power estimates.
+    
+    %\noindent
+    {\it 3. (In)accuracies in finite samples.} While existing tools rely on large-sample approximations in their power calculations, these approximations are not reliable in finite samples when genetic variants are rare. Existing calculators are silent about the applicability of asymptotics-based approximations, and how they should be corrected.
+% \end{enumerate}
+
+As a result, it is not only challenging to use the existing power calculation tools for planning genetic association studies correctly, but also difficult to systematically review the statistical validity of findings reported in the literature, since different models and tests must be handled differently, and with care.
+
+In an effort to address these difficulties and deficiencies, we propose a unified framework for power analysis of single variant association studies.
+By abstracting away the assumptions of disease models and testing procedures which may vary from study to study, we reduce the problem to the essential quantities that are invariant to nuisance parameters. 
+These ideas are implemented in the software U-PASS, enabling model-invariant, test-independent power analysis, as well as systematic reviews of the statistical validity of reported findings.
+
+We briefly summarize the important features and uses of the software below.
+Mathematical details and results from numerical experiments are collected in the Supplement.
+

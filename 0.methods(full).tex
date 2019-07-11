@@ -1,0 +1,85 @@
+Once the phenotypes and genotypes have been defined, we may tabulate the counts of subjects in each phenotype-genotype combination in the form of a contingency tables.
+% There are different ways of defining genotypes.
+For a 2 genotype by 2 phenotype definition, we have the following table.
+\begin{center}
+    \begin{tabular}{cccc}
+    \hline
+    & \multicolumn{2}{c}{Genotype} & \\
+    \cline{2-3}
+    \# Observations & Variant 1 & Variant 2 & Total by phenotype \\
+    \hline
+    Cases & $O_{11}$ & $O_{12}$ & $n_1$ \\
+    Controls & $O_{21}$ & $O_{22}$ & $n_2$ \\
+    \hline
+    \end{tabular}
+\end{center}
+Statistics are then calculated based on the counts, to test for associations between the genotypes and phenotypes, at levels adjusted for multiplicity.
+Performance of the tests are measured in terms of power, i.e., probability of correct rejection under an alternative hypothesis.
+
+A power analysis starts by assuming an alternative, typically described by a disease model (recessive, dominant, additive, etc.).
+Power of a test is approximated either based on large sample asymptotics, or by simulating the empirical distribution of the statistic under the alternative.
+
+\subsection{A model-free parametrization}
+
+Note that even when the disease model dictates more than two genotypes (e.g., one heterozygous and two homozygous variants in an additive model), the association tests may still be based on only two derived variants.
+This can be due to either grouping of the genotypes definitions in dominant or recessive models, or by adopting a direct comparison of the proportions of allele types between the Case and Control groups, as opposed to the proportions of zygosity.
+Indeed, the latter approach is the basis of power calculations in \cite{Skol06}.
+
+Regardless of the disease model assumed, the test statistics are calculated based on cell counts of the contingency table.
+The alternative hypothesis, consequently, influences the distribution of the test statistics only through altering the distribution of the multinomial integer counts in the contingency tables.
+
+Consider 2-by-2 multinomial distributions with probability matrix $\mu$,
+\begin{center}
+    \begin{tabular}{cccc}
+    \hline
+    & \multicolumn{2}{c}{Genotype} \\
+    \cline{2-3}
+    Probabilities & Variant 1 & Variant 2 & Total by phenotype \\
+    \hline
+    Cases & $\mu_{11}$ & $\mu_{12}$ & $\phi_1$ \\
+    Controls & $\mu_{21}$ & $\mu_{22}$ & $1-\phi_1$ \\
+    \hline
+    \end{tabular}
+\end{center}
+We may assume -- by relabelling, and hence without loss of generality -- that genetic Variant 1 is positively associated with the Cases, and referred to as the risk allele / variant. 
+The multinomial probability matrix $\mu$ can be fully parametrized by the trio of parameters
+\begin{itemize}
+    \item the marginal distribution of phenotypes, i.e., fraction of Cases $\phi_1$,
+    \item the conditional distribution of risk variant among Controls, i.e., risk allele frequency (RAF) in the Control group 
+    \begin{equation} \label{eq:risk-allele-frequency}
+    f := \mu_{21}/(1-\phi_1),
+    \end{equation}
+    \item and the odds ratio (OR) of the genotype Variant 1 to Variant 2
+    \begin{equation} \label{eq:odds-ratio}
+    \text{R} := \frac{\mu_{11}}{\mu_{21}}\Big/\frac{\mu_{12}}{\mu_{22}}
+    = \frac{\mu_{11}\mu_{22}}{\mu_{12}\mu_{21}}.
+    \end{equation}
+\end{itemize}
+
+An alternative hypothesis, e.g., a disease model, determines the the trio of quantities either implicitly or explicitly,
+%The fraction of Cases $\phi$ is part of the study design.
+and therefore fully determines statistical power for a specific test at a given sample size.
+From a statistical perspective, the disease model serves no role except to specify the distribution of the counts under the alternative.
+Power may be calculated by directly prescribing the trio $(\phi_1, f, R)$, and the sample size.
+
+We make the important distinction here between RAF \emph{in the Control group} ($f$), versus RAF \emph{in the study} ($\mu_{11}+\mu_{21}$), and RAF \emph{in the general population}.
+Throughout this work, RAF is taken to mean the risk allele frequency in the Control group.
+
+\subsection{A test-independent power analysis}
+
+While disease models play no role beyond specifying the alternative, they do sometimes inform our choice of a test statistic, hence influencing statistical power in higher order contingency tables.
+See \cite{Gonzalez08, Li08} for examples where tests are tailored to disease models. 
+
+Fortunately, for 2-by-2 tables, power calculations can be unified.
+A wide range of association tests enjoy the same power asymptotically.
+\begin{theorem} \label{thm:1}
+In 2-by-2 contingency tables, likelihood ratio test and chi-squared test for independence, likelihood ratio test for zero slope in logistic regressions, and Welch's t-test for equal proportions have the same asymptotic power curves.
+\end{theorem}
+
+%\end{methods}
+Theorem \ref{thm:1} is the central result that paves way for a unified powers analysis.
+It allows us to chart findings from different studies employing the applicable tests in the same diagram, with the same power limits.
+In particular, for large samples, tests for zero slopes in logistic regressions should report approximately the same set of loci as Welch's t-tests for equal proportions on the same dataset, after the same family-wise error rate adjustments.
+The estimated odds ratios (in the case of logistic regression, estimate slopes exponentiated) and RAF's, when charted on the OR-RAF diagram, should also follow the same power limits.
+
+Proof of Theorem 1, and formulas for power calculations in terms of the trio $(\phi_1, f, R)$ are detailed in the Supplementary data.
